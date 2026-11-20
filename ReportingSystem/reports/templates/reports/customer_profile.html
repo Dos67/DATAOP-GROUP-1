@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Profile | Reporting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .report-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .sales {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Reporting System</h1>
+    <p>AdventureWorks2019 Business Analytics</p>
+</header>
+
+<div class="container">
+    <div class="report-card">
+
+        <h2>Customer Profile Report</h2>
+        <p>Top 20 customers ranked by total sales.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Type</th>
+                    <th>Total Orders</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for customer in customer_data %}
+                <tr>
+                    <td>{{ customer.customer_id }}</td>
+                    <td>{{ customer.customer_name }}</td>
+                    <td>{{ customer.customer_type }}</td>
+                    <td>{{ customer.total_orders }}</td>
+                    <td class="sales">
+                        ${{ customer.total_sales_formatted }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No customer data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="back-link" href="{% url 'home' %}">
+            ← Back to Home
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

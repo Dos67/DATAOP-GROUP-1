@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales Report | Reporting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin-top: 8px;
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .report-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .sales {
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2563eb;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Reporting System</h1>
+    <p>AdventureWorks2019 Business Analytics</p>
+</header>
+
+<div class="container">
+
+    <div class="report-card">
+
+        <h2>Sales Report</h2>
+        <p>Annual sales performance and order overview</p>
+
+    <!-- Year Filter -->
+    <form method="GET" action="{% url 'sales_report' %}" style="margin: 20px 0;">
+        <label for="year"><strong>Filter by Year:</strong></label>
+
+        <select name="year" id="year" onchange="this.form.submit()">
+            <option value="" {% if not selected_year %}selected{% endif %}>
+                All Years
+            </option>
+
+            {% for year in years %}
+                <option value="{{ year }}"
+                    {% if selected_year == year|stringformat:"s" %}selected{% endif %}>
+                    {{ year }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Orders</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for sale in sales_data %}
+                <tr>
+                    <td>{{ sale.year }}</td>
+                    <td>{{ sale.total_orders }}</td>
+                    <td class="sales">${{ sale.total_sales_formatted }}</td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="3">No sales data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+<hr style="margin: 30px 0;">
+
+<h2>Annual Sales Trend</h2>
+<p>Visual representation of total sales from 2011 to 2014.</p>
+
+<div style="width: 100%; max-width: 900px; height: 350px;">
+    <canvas id="salesChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const salesYears = [
+        {% for sale in sales_data %}
+            '{{ sale.year }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const annualSales = [
+        {% for sale in sales_data %}
+            {{ sale.total_sales }}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const ctx = document.getElementById('salesChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: salesYears,
+            datasets: [{
+                label: 'Annual Sales',
+                data: annualSales,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+        <hr style="margin: 30px 0;">
+
+<h2>Sales by Territory</h2>
+<p>Comparison of total sales across different territories.</p>
+
+<div style="width: 100%; max-width: 900px; height: 400px;">
+    <canvas id="territoryChart"></canvas>
+</div>
+
+<script>
+    const territoryLabels = [
+        {% for item in territory_data %}
+            '{{ item.territory|escapejs }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const territorySales = [
+        {% for item in territory_data %}
+            {{ item.total_sales }}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    new Chart(document.getElementById('territoryChart'), {
+        type: 'bar',
+        data: {
+            labels: territoryLabels,
+            datasets: [{
+                label: 'Total Sales',
+                data: territorySales,
+                backgroundColor: '#10b981',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<hr style="margin: 30px 0;">
+
+<h2>Sales by Product Category</h2>
+<p>Comparison of total sales across different product categories.</p>
+
+<div style="width: 100%; max-width: 900px; height: 400px;">
+    <canvas id="categoryChart"></canvas>
+</div>
+
+<script>
+    const categoryLabels = [
+        {% for item in category_data %}
+            '{{ item.category|escapejs }}'{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const categorySales = [
+        {% for item in category_data %}
+            {{ item.total_sales }}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    new Chart(document.getElementById('categoryChart'), {
+        type: 'bar',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Total Sales',
+                data: categorySales,
+                backgroundColor: '#6366f1',
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<a class="back-link" href="/">← Back to Home</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

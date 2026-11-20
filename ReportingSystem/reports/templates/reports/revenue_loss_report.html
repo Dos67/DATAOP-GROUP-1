@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue and Loss Report | Reporting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .report-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .revenue {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .cost {
+            color: #dc2626;
+        }
+
+        .profit {
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .note {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Reporting System</h1>
+    <p>AdventureWorks2019 Business Analytics</p>
+</header>
+
+<div class="container">
+    <div class="report-card">
+
+        <h2>Revenue and Loss Report</h2>
+        <p>Annual revenue, estimated product costs, and estimated gross profit or loss.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Total Orders</th>
+                    <th>Total Revenue</th>
+                    <th>Estimated Cost</th>
+                    <th>Estimated Profit/Loss</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in revenue_loss_data %}
+                <tr>
+                    <td>{{ item.year }}</td>
+                    <td>{{ item.total_orders }}</td>
+                    <td class="revenue">
+                        ${{ item.total_revenue_formatted }}
+                    </td>
+                    <td class="cost">
+                        ${{ item.estimated_cost_formatted }}
+                    </td>
+                    <td class="profit">
+                        ${{ item.estimated_profit_loss_formatted }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No revenue and loss data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="note">
+            Note: Estimated costs use the products' standard costs.
+            These figures are estimates and may not represent actual historical costs.
+        </p>
+
+        <a class="back-link" href="{% url 'home' %}">
+            &larr; Back to Home
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

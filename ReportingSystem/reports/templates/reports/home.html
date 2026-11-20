@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdventureWorks Reporting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .welcome-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .module-card h3 {
+            margin-top: 0;
+        }
+
+        .module-card p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .module-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .module-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            color: #6b7280;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            header {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>AdventureWorks Reporting System</h1>
+    <p>AdventureWorks2019 Business Analytics</p>
+</header>
+
+<div class="container">
+
+    <div class="welcome-card">
+        <h2>Welcome to the Reporting Dashboard</h2>
+        <p>
+            Explore business performance through sales analysis,
+            customer information, revenue reports, and product cost data.
+        </p>
+    </div>
+
+    <h2>Reporting Modules</h2>
+
+    <div class="module-grid">
+
+        <div class="module-card">
+            <h3>Sales Report</h3>
+            <p>
+                Analyze annual sales, sales territories,
+                and product category performance.
+            </p>
+            <a class="module-link" href="{% url 'sales_report' %}">
+                View Sales Report →
+            </a>
+        </div>
+
+        <div class="module-card">
+            <h3>Customer Profile</h3>
+            <p>
+                Explore customer information, order counts,
+                and total customer sales.
+            </p>
+            <a class="module-link" href="{% url 'customer_profile' %}">
+                View Customer Profile →
+            </a>
+        </div>
+
+        <div class="module-card">
+            <h3>Revenue and Loss Report</h3>
+            <p>
+                Review annual revenue, estimated product costs,
+                and estimated gross profit or loss.
+            </p>
+            <a class="module-link" href="{% url 'revenue_loss_report' %}">
+                View Revenue and Loss →
+            </a>
+        </div>
+
+        <div class="module-card">
+            <h3>Cost Report</h3>
+            <p>
+                Examine product standard costs, list prices,
+                and estimated profit margins.
+            </p>
+            <a class="module-link" href="{% url 'cost_report' %}">
+                View Cost Report →
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    AdventureWorks2019 Business Analytics and Reporting System
+</footer>
+
+</body>
+</html>

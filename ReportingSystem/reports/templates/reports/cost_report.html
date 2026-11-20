@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Report | Reporting System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #1f2937;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            color: #d1d5db;
+        }
+
+        .container {
+            padding: 30px 40px;
+        }
+
+        .report-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #374151;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .cost {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .price {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .margin {
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .note {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Reporting System</h1>
+    <p>AdventureWorks2019 Business Analytics</p>
+</header>
+
+<div class="container">
+    <div class="report-card">
+
+        <h2>Cost Report</h2>
+        <p>Product costs, list prices, and estimated profit margins.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Standard Cost</th>
+                    <th>List Price</th>
+                    <th>Estimated Profit Margin</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in cost_data %}
+                <tr>
+                    <td>{{ item.product_id }}</td>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.category }}</td>
+                    <td class="cost">
+                        ${{ item.standard_cost_formatted }}
+                    </td>
+                    <td class="price">
+                        ${{ item.list_price_formatted }}
+                    </td>
+                    <td class="margin">
+                        {{ item.profit_margin_formatted }}%
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No product data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="note">
+            Note: Profit margins are estimates based on standard cost
+            and list price. They do not represent actual realized profit.
+        </p>
+
+        <a class="back-link" href="{% url 'home' %}">
+            &larr; Back to Home
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
